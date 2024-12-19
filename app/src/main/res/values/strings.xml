@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Remoria</string>
+
+    <string-array name="relationship_stat">
+        <item>Single</item>
+        <item>In a Relationship</item>
+        <item>Married</item>
+        <item>It\'s Complicated</item>
+        <item>Engaged</item>
+        <item>Divorced</item>
+        <item>Widowed</item>
+    </string-array>
+
+    <string-array name="zodiac_signs">
+        <item>Aries</item>
+        <item>Taurus</item>
+        <item>Gemini</item>
+        <item>Cancer</item>
+        <item>Leo</item>
+        <item>Virgo</item>
+        <item>Libra</item>
+        <item>Scorpio</item>
+        <item>Sagittarius</item>
+        <item>Capricorn</item>
+        <item>Aquarius</item>
+        <item>Pisces</item>
+    </string-array>
+
+
+</resources>
+
+
