@@ -79,24 +79,6 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Birthdate -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textBirthdate"
-                android:layout_width="350dp"
-                android:layout_height="70dp"
-                android:layout_marginTop="5dp"
-                android:hint="Birthdate"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textNickname">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="350dp"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Zodiac Sign -->
             <com.google.android.material.textfield.TextInputLayout
@@ -108,7 +90,7 @@
                 app:endIconMode="dropdown_menu"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textBirthdate">
+                app:layout_constraintTop_toBottomOf="@+id/textNickname">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/zodiacDropdown"
@@ -156,8 +138,6 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="350dp"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="false"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -175,8 +155,6 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="350dp"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="false"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -194,8 +172,6 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="350dp"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="false"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -213,8 +189,6 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="350dp"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="false"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -232,8 +206,6 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="350dp"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="false"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 

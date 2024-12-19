@@ -19,8 +19,6 @@ class FillInfo : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-
-
         // Initialize ViewBinding
         binding = ActivityFillInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -32,8 +30,7 @@ class FillInfo : AppCompatActivity() {
             insets
         }
 
-
-        // Initialize adapter for zodiac signs
+        // Initialize adapter for zodiac signs dropdown
         val zodiacAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.zodiac_signs,
@@ -42,7 +39,7 @@ class FillInfo : AppCompatActivity() {
         zodiacAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.zodiacDropdown.setAdapter(zodiacAdapter)
 
-// Set up the Relationship status Spinner
+        // Set up the Relationship status Spinner
         val relationshipAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.relationship_stat,
@@ -50,17 +47,6 @@ class FillInfo : AppCompatActivity() {
         )
         relationshipAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.statusDropdown.setAdapter(relationshipAdapter)
-
-        // Correctly access the EditText inside TextInputLayout
-        val textFullname = binding.textFullname.editText?.text.toString()
-
-
-        val resultIntent = Intent()
-        resultIntent.putExtra("FULL_NAME_KEY", textFullname)
-        setResult(RESULT_OK, resultIntent)
-        finish()
-
-
 
         // Set up the click listener for the "backbtn" button
         binding.backbtn.setOnClickListener {
@@ -78,9 +64,39 @@ class FillInfo : AppCompatActivity() {
             builder.create().show() // Show the dialog
         }
 
-
+        // Set up the Save button listener
         binding.saveInfo.setOnClickListener {
+            // Collecting data from the user
+            val fullName = binding.textFullname.editText?.text.toString()
+            val nickname = binding.textNickname.editText?.text.toString()
+
+            // Fetch selected values from Spinners
+            val zodiacSign = binding.zodiacDropdown.text?.toString() ?: ""
+            val relationshipStatus  = binding.statusDropdown.text?.toString() ?: ""
+
+            // Collect other user input
+            val color = binding.Color.editText?.text.toString()
+            val movieCharacter = binding.movieChar.editText?.text.toString()
+            val place = binding.Place.editText?.text.toString()
+            val favoriteQuote = binding.faveQoute.editText?.text.toString()
+            val bestDescription = binding.bestDes.editText?.text.toString()
+
+            // Create a SlamInfo object with the collected data
+            val slamInfo = SlamInfo(
+                fullName = fullName,
+                nickname = nickname,
+                zodiacSign = zodiacSign,
+                relationshipStatus = relationshipStatus,
+                color = color,
+                movieCharacter = movieCharacter,
+                place = place,
+                favoriteQuote = favoriteQuote,
+                bestDescription = bestDescription
+            )
+
+            // Pass the SlamInfo object to the Home activity
             val intent = Intent(this, Home::class.java)
+            intent.putExtra("slam_info", slamInfo) // Pass SlamInfo as Parcelable
             startActivity(intent)
         }
     }
