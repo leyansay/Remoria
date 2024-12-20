@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         // Set click listener using ViewBinding
         binding.getStarted.setOnClickListener {
             // Navigate to RegisterActivity
-            val intent = Intent(this, Register::class.java)
+            val intent = Intent(this, LandingPage::class.java)
             startActivity(intent)
         }
     }
