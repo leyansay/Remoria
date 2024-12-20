@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation("com.google.android.material:material:1.6.1")
+    implementation ("androidx.activity:activity:1.6.0" )// Or the latest version
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

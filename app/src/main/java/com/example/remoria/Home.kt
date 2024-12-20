@@ -2,7 +2,9 @@ package com.example.remoria
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -34,31 +36,28 @@ class Home : AppCompatActivity() {
         // Initialize RecyclerView with the empty list
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = SlamInfoAdapter(slamInfoList)  // Pass the empty list to the adapter
+        val adapter = SlamInfoAdapter(slamInfoList)  // Create the adapter
+        recyclerView.adapter = adapter  // Set the adapter for the RecyclerView
 
         // Navigate to FillInfo activity when addButton is clicked
         binding.addButton.setOnClickListener {
             val intent = Intent(this, FillInfo::class.java)
-            startActivityForResult(intent, REQUEST_CODE_ADD_INFO)  // Requesting data from FillInfo
+            resultLauncher.launch(intent)  // Launch the activity for result
         }
     }
 
-    // Handle the result from FillInfo activity (user adding data)
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    // Registering the activity result launcher
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            // Extract SlamInfo data from the intent
+            val slamInfo = result.data?.getParcelableExtra<SlamInfo>("slamInfo")
 
-        if (requestCode == REQUEST_CODE_ADD_INFO && resultCode == RESULT_OK) {
-            // Extract the SlamInfo data from the intent
-            val slamInfo = data?.getParcelableExtra<SlamInfo>("slamInfo")
-            if (slamInfo != null) {
-                slamInfoList.add(slamInfo)  // Add the new SlamInfo to the list
+            // Check if slamInfo is not null
+            slamInfo?.let {
+                slamInfoList.add(it)  // Add the new SlamInfo to the list
+                Log.d("HomeActivity", "Added SlamInfo: $slamInfo")  // Log the SlamInfo data
                 recyclerView.adapter?.notifyDataSetChanged()  // Notify the adapter that data has changed
             }
         }
-    }
-
-
-    companion object {
-        const val REQUEST_CODE_ADD_INFO = 1  // Request code for adding info
     }
 }

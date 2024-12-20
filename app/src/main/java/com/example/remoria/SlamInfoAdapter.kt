@@ -1,67 +1,48 @@
 package com.example.remoria
 
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remoria.databinding.ActivitySlamUserListBinding
 
-class SlamInfoAdapter(private val slamList: List<SlamInfo>) :
-    RecyclerView.Adapter<SlamInfoAdapter.SlamViewHolder>() {
+class SlamInfoAdapter(private val slamInfoList: MutableList<SlamInfo>) :
+    RecyclerView.Adapter<SlamInfoAdapter.SlamInfoViewHolder>() {
 
-    class SlamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val fullName: TextView = itemView.findViewById(R.id.textFullname)
-        val nickname: TextView = itemView.findViewById(R.id.textNickname)
-        val zodiacSign: TextView = itemView.findViewById(R.id.textZodiac)
-        val relationshipStatus: TextView = itemView.findViewById(R.id.statusDropdown)
-        val color: TextView = itemView.findViewById(R.id.Color)
-        val movieCharacter: TextView = itemView.findViewById(R.id.movieChar)
-        val place: TextView = itemView.findViewById(R.id.Place)
-        val favoriteQuote: TextView = itemView.findViewById(R.id.faveQoute)
-        val bestDescription: TextView = itemView.findViewById(R.id.bestDes)
+    // Create a ViewHolder for each item
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SlamInfoViewHolder {
+        val binding = ActivitySlamUserListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return SlamInfoViewHolder(binding)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SlamViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.activity_slam_user_list, parent, false)
-        return SlamViewHolder(view)
+    // Bind data to the ViewHolder
+    override fun onBindViewHolder(holder: SlamInfoViewHolder, position: Int) {
+        val slamInfo = slamInfoList[position]
+        holder.bind(slamInfo)
     }
 
-    override fun onBindViewHolder(holder: SlamViewHolder, position: Int) {
-        val item = slamList[position]
-        holder.fullName.text = item.fullName
-        holder.nickname.text = item.nickname
-        holder.zodiacSign.text = item.zodiacSign
-        holder.relationshipStatus.text = item.relationshipStatus
-        holder.color.text = item.color
-        holder.movieCharacter.text = item.movieCharacter
-        holder.place.text = item.place
-        holder.favoriteQuote.text = item.favoriteQuote
-        holder.bestDescription.text = item.bestDescription
+    // Return the total number of items in the list
+    override fun getItemCount(): Int {
+        return slamInfoList.size
+    }
 
-        // Set an OnClickListener for item clicks (optional)
-        holder.itemView.setOnClickListener {
-            navigateToDetails(holder.itemView.context, item)
+    // ViewHolder to bind the slamInfo to the UI
+    inner class SlamInfoViewHolder(private val binding: ActivitySlamUserListBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(slamInfo: SlamInfo) {
+            binding.Name.text = slamInfo.fullName
+            binding.nickName.text = slamInfo.nickname
+            binding.nickName3.text = slamInfo.zodiacSign
+            binding.nickName4.text = slamInfo.relationshipStatus
+            binding.nickName5.text = slamInfo.color
+            binding.nickName6.text = slamInfo.movieCharacter
+            binding.nickName7.text = slamInfo.place
+            binding.nickName8.text = slamInfo.favoriteQuote
+            binding.nickName9.text = slamInfo.bestDescription
         }
     }
 
-    override fun getItemCount(): Int = slamList.size
-
-    private fun navigateToDetails(context: Context, slamInfo: SlamInfo) {
-        val intent = Intent(context, Home::class.java)
-        intent.putExtra("fullName", slamInfo.fullName)
-        intent.putExtra("nickname", slamInfo.nickname)
-        intent.putExtra("zodiac sign", slamInfo.zodiacSign)
-        intent.putExtra("relationship status", slamInfo.relationshipStatus)
-        intent.putExtra("color", slamInfo.color)
-        intent.putExtra("movie character", slamInfo.movieCharacter)
-        intent.putExtra("place", slamInfo.place)
-        intent.putExtra("favorite quote", slamInfo.favoriteQuote)
-        intent.putExtra("best describe", slamInfo.bestDescription)
-        // Add other fields to the intent as needed
-        context.startActivity(intent)
+    // Add new SlamInfo data to the list
+    fun addSlamInfo(slamInfo: SlamInfo) {
+        slamInfoList.add(slamInfo)
+        notifyItemInserted(slamInfoList.size - 1)
     }
 }
