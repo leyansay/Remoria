@@ -3,7 +3,9 @@ package com.example.remoria
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -44,6 +46,7 @@ class Home : AppCompatActivity() {
             val intent = Intent(this, FillInfo::class.java)
             resultLauncher.launch(intent)  // Launch the activity for result
         }
+
 
 
     }

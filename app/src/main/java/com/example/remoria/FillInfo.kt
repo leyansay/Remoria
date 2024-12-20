@@ -59,44 +59,36 @@ class FillInfo : AppCompatActivity() {
                 .show()
         }
 
-        // Save button listener
         binding.saveInfo.setOnClickListener {
-            val fullName = binding.textFullname.editText?.text.toString().trim()
-            val nickname = binding.textNickname.editText?.text.toString().trim()
-            val zodiacSign = binding.zodiacDropdown.text?.toString()?.trim() ?: ""
-            val relationshipStatus = binding.statusDropdown.text?.toString()?.trim() ?: ""
-            val color = binding.Color.editText?.text.toString().trim()
-            val movieCharacter = binding.movieChar.editText?.text.toString().trim()
-            val place = binding.Place.editText?.text.toString().trim()
-            val favoriteQuote = binding.faveQoute.editText?.text.toString().trim()
-            val bestDescription = binding.bestDes.editText?.text.toString().trim()
+            // Collect data
+            val slamInfo = SlamInfo(
+                fullName = binding.textFullname.editText?.text.toString().trim(),
+                nickname = binding.textNickname.editText?.text.toString().trim(),
+                zodiacSign = binding.zodiacDropdown.text?.toString()?.trim() ?: "",
+                relationshipStatus = binding.statusDropdown.text?.toString()?.trim() ?: "",
+                color = binding.Color.editText?.text.toString().trim(),
+                movieCharacter = binding.movieChar.editText?.text.toString().trim(),
+                place = binding.Place.editText?.text.toString().trim(),
+                favoriteQuote = binding.faveQoute.editText?.text.toString().trim(),
+                bestDescription = binding.bestDes.editText?.text.toString().trim()
+            )
 
-            // Validate fields
-            if (fullName.isEmpty() || nickname.isEmpty() ||
-                zodiacSign.isEmpty() || relationshipStatus.isEmpty() ||
-                color.isEmpty() || movieCharacter.isEmpty() || place.isEmpty() ||
-                favoriteQuote.isEmpty() || bestDescription.isEmpty()) {
+            // Validate that essential fields are not empty
+            if (slamInfo.fullName.isEmpty() || slamInfo.nickname.isEmpty() ||
+                slamInfo.zodiacSign.isEmpty() || slamInfo.relationshipStatus.isEmpty() ||
+                slamInfo.color.isEmpty() || slamInfo.movieCharacter.isEmpty() || slamInfo.place.isEmpty() ||
+                slamInfo.favoriteQuote.isEmpty() || slamInfo.bestDescription.isEmpty()) {
 
                 Toast.makeText(this, "Fields must not be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Create SlamInfo object and navigate to Home
-            val slamInfo = SlamInfo(
-                fullName = fullName,
-                nickname = nickname,
-                zodiacSign = zodiacSign,
-                relationshipStatus = relationshipStatus,
-                color = color,
-                movieCharacter = movieCharacter,
-                place = place,
-                favoriteQuote = favoriteQuote,
-                bestDescription = bestDescription
-            )
-
-            val intent = Intent(this, Home::class.java)
-            intent.putExtra("slam_info", slamInfo) // Ensure SlamInfo implements Parcelable
-            startActivity(intent)
+            // Pass data back to Home activity
+            val resultIntent = Intent().apply {
+                putExtra("slamInfo", slamInfo) // Assuming SlamInfo is Parcelable
+            }
+            setResult(RESULT_OK, resultIntent)
+            finish() // Close FillInfo activity
         }
     }
 }

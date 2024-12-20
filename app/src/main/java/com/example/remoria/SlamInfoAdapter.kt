@@ -2,10 +2,12 @@ package com.example.remoria
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remoria.databinding.ActivitySlamUserListBinding
 
-class SlamInfoAdapter(private val slamInfoList: List<SlamInfo>) :
+class SlamInfoAdapter(private val slamInfoList: MutableList<SlamInfo>) :
     RecyclerView.Adapter<SlamInfoAdapter.SlamInfoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SlamInfoViewHolder {
@@ -15,7 +17,7 @@ class SlamInfoAdapter(private val slamInfoList: List<SlamInfo>) :
 
     override fun onBindViewHolder(holder: SlamInfoViewHolder, position: Int) {
         val slamInfo = slamInfoList[position]
-        holder.bind(slamInfo)
+        holder.bind(slamInfo, position)
     }
 
     override fun getItemCount(): Int {
@@ -24,7 +26,8 @@ class SlamInfoAdapter(private val slamInfoList: List<SlamInfo>) :
 
     inner class SlamInfoViewHolder(private val binding: ActivitySlamUserListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(slamInfo: SlamInfo) {
+
+        fun bind(slamInfo: SlamInfo, position: Int) {
             binding.Name.text = slamInfo.fullName
             binding.nickName.text = slamInfo.nickname
             binding.nickName3.text = slamInfo.zodiacSign
@@ -34,6 +37,26 @@ class SlamInfoAdapter(private val slamInfoList: List<SlamInfo>) :
             binding.nickName7.text = slamInfo.place
             binding.nickName8.text = slamInfo.favoriteQuote
             binding.nickName9.text = slamInfo.bestDescription
+
+            // Set up the click listener for the trash button
+            binding.trashbtn.setOnClickListener {
+                // Show a confirmation dialog
+                val builder = AlertDialog.Builder(binding.root.context)
+                builder.setTitle("Delete Confirmation")
+                builder.setMessage("Are you sure you want to delete this item?")
+                builder.setPositiveButton("Yes") { dialog, _ ->
+                    dialog.dismiss()
+                    // Remove the item from the list
+                    slamInfoList.removeAt(position)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, slamInfoList.size)
+                    Toast.makeText(binding.root.context, "Item deleted", Toast.LENGTH_SHORT).show()
+                }
+                builder.setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss() // Close the dialog without doing anything
+                }
+                builder.create().show()
+            }
         }
     }
 }
