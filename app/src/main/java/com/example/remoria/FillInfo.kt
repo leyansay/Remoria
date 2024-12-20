@@ -3,8 +3,7 @@ package com.example.remoria
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -17,9 +16,6 @@ class FillInfo : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
-        // Initialize ViewBinding
         binding = ActivityFillInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -30,7 +26,7 @@ class FillInfo : AppCompatActivity() {
             insets
         }
 
-        // Initialize adapter for zodiac signs dropdown
+        // Initialize dropdown adapters
         val zodiacAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.zodiac_signs,
@@ -39,7 +35,6 @@ class FillInfo : AppCompatActivity() {
         zodiacAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.zodiacDropdown.setAdapter(zodiacAdapter)
 
-        // Set up the Relationship status Spinner
         val relationshipAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.relationship_stat,
@@ -48,40 +43,45 @@ class FillInfo : AppCompatActivity() {
         relationshipAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.statusDropdown.setAdapter(relationshipAdapter)
 
-        // Set up the click listener for the "backbtn" button
+        // Back button listener
         binding.backbtn.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Discard Changes?")
-            builder.setMessage("Are you sure you want to discard the changes?")
-            builder.setPositiveButton("Yes") { dialog, _ ->
-                dialog.dismiss()
-                val intent = Intent(this, Home::class.java)
-                startActivity(intent)
-            }
-            builder.setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss() // Close the dialog without doing anything
-            }
-            builder.create().show() // Show the dialog
+            AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("Are you sure you want to discard the changes?")
+                .setPositiveButton("Yes") { dialog, _ ->
+                    dialog.dismiss()
+                    startActivity(Intent(this, Home::class.java))
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+                .show()
         }
 
-        // Set up the Save button listener
+        // Save button listener
         binding.saveInfo.setOnClickListener {
-            // Collecting data from the user
-            val fullName = binding.textFullname.editText?.text.toString()
-            val nickname = binding.textNickname.editText?.text.toString()
+            val fullName = binding.textFullname.editText?.text.toString().trim()
+            val nickname = binding.textNickname.editText?.text.toString().trim()
+            val zodiacSign = binding.zodiacDropdown.text?.toString()?.trim() ?: ""
+            val relationshipStatus = binding.statusDropdown.text?.toString()?.trim() ?: ""
+            val color = binding.Color.editText?.text.toString().trim()
+            val movieCharacter = binding.movieChar.editText?.text.toString().trim()
+            val place = binding.Place.editText?.text.toString().trim()
+            val favoriteQuote = binding.faveQoute.editText?.text.toString().trim()
+            val bestDescription = binding.bestDes.editText?.text.toString().trim()
 
-            // Fetch selected values from Spinners
-            val zodiacSign = binding.zodiacDropdown.text?.toString() ?: ""
-            val relationshipStatus  = binding.statusDropdown.text?.toString() ?: ""
+            // Validate fields
+            if (fullName.isEmpty() || nickname.isEmpty() ||
+                zodiacSign.isEmpty() || relationshipStatus.isEmpty() ||
+                color.isEmpty() || movieCharacter.isEmpty() || place.isEmpty() ||
+                favoriteQuote.isEmpty() || bestDescription.isEmpty()) {
 
-            // Collect other user input
-            val color = binding.Color.editText?.text.toString()
-            val movieCharacter = binding.movieChar.editText?.text.toString()
-            val place = binding.Place.editText?.text.toString()
-            val favoriteQuote = binding.faveQoute.editText?.text.toString()
-            val bestDescription = binding.bestDes.editText?.text.toString()
+                Toast.makeText(this, "Fields must not be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            // Create a SlamInfo object with the collected data
+            // Create SlamInfo object and navigate to Home
             val slamInfo = SlamInfo(
                 fullName = fullName,
                 nickname = nickname,
@@ -94,9 +94,8 @@ class FillInfo : AppCompatActivity() {
                 bestDescription = bestDescription
             )
 
-            // Pass the SlamInfo object to the Home activity
             val intent = Intent(this, Home::class.java)
-            intent.putExtra("slam_info", slamInfo) // Pass SlamInfo as Parcelable
+            intent.putExtra("slam_info", slamInfo) // Ensure SlamInfo implements Parcelable
             startActivity(intent)
         }
     }

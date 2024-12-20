@@ -35,5 +35,13 @@ class Register : AppCompatActivity() {
             val intent = Intent(this, Home::class.java)
             startActivity(intent)
         }
+
+        binding.toHome.setOnClickListener {
+            val username = binding.usernameEditText.text.toString().trim()
+            val intent = Intent(this, Home::class.java)
+            intent.putExtra("username", username) // Pass the username
+            startActivity(intent)
+        }
+
     }
 }
